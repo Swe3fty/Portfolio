@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gaspard Vieujean — Software &amp; AI Engineering</title>
+  <meta name="description" content="Portfolio de Gaspard Vieujean, étudiant ingénieur à l'ISEN Brest — Software Development &amp; Intelligence Artificielle.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2309090B'/%3E%3Cpath d='M8 11l6 5-6 5' stroke='%232563EB' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 21h8' stroke='%23FAFAFA' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!--Gérer les animations d'apparitions html class="js"-->
+  <!-- Active le mode "enhanced" avant le premier paint : sans JS (ex. blocage file://), tout le contenu reste visible et le loader n'apparaît jamais -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Bootstrap 5.3 (grille + reboot typographique) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ═══ Loader terminal ═══ -->
+  <!-- Aria-hidden-true : lecteurs d'écrans d'ignorer cette zone-->
+  <div id="loader-terminal" aria-hidden="true">
+    <div class="terminal-window">
+      <p class="terminal-line terminal-prompt">gaspard@isen-brest:~$ ./portfolio --init</p>
+      <div class="terminal-output"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Curseur custom ═══ -->
+  <div id="custom-cursor" aria-hidden="true"></div>
+
+  <!-- ═══ Miniature hover-reveal des projets ═══ -->
+  <div id="project-preview" aria-hidden="true">
+    <img src="" alt="" width="1200" height="600">
+  </div>
+
+  <!-- ═══ Navigation ═══ -->
+  <header class="site-header">
+    <nav class="container-fluid d-flex justify-content-between align-items-center">
+      <a href="#top" class="nav-logo magnetic">GV<span class="accent">.</span></a>
+      <a href="mailto:gaspard.vieujean@outlook.com" class="nav-contact magnetic">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ═══ Hero ═══ -->
+    <section class="hero d-flex flex-column justify-content-center">
+      <div class="container-fluid">
+        <div class="row align-items-center gy-5">
+          <div class="col-12 col-lg-8">
+            <p class="hero-eyebrow reveal">Portfolio — 2026</p>
+            <h1 class="hero-title reveal">Gaspard<br>Vieujean</h1>
+            <p class="hero-subtitle reveal">Software &amp; AI Engineering<span class="accent">_</span></p>
+            <p class="hero-meta reveal">Étudiant ingénieur · ISEN Brest · 3<sup>e</sup> année</p>
+          </div>
+          <div class="col-12 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+            <div class="hero-portrait reveal">
+              <img src="assets/img/portrait-couleur.jpg" alt="Portrait de Gaspard Vieujean" width="1000" height="1000">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-scroll reveal" aria-hidden="true">
+        <span>scroll</span>
+        <i class="fa-solid fa-arrow-down-long"></i>
+      </div>
+    </section>
+
+    <!-- ═══ À propos ═══ -->
+    <section class="about" id="about">
+      <div class="container-fluid">
+        <p class="section-label reveal"><span class="accent">01</span> — À propos</p>
+
+        <!-- Titre-manifeste : même échelle typographique que le hero et le contact -->
+        <h2 class="about-statement">
+          <span class="statement-line reveal">Comprendre,</span>
+          <span class="statement-line reveal">construire,</span>
+          <span class="statement-line statement-line--ghost reveal">résoudre<span class="accent">.</span></span>
+        </h2>
+
+        <div class="row gy-5 gx-lg-5 align-items-start">
+
+          <!-- Présentation + CV -->
+          <div class="col-12 col-lg-5">
+            <div class="about-intro reveal">
+              <p class="about-text">
+                Étudiant ingénieur en 3<sup>e</sup> année à l'ISEN Brest, je me spécialise en
+                <strong>développement logiciel</strong> et en <strong>intelligence artificielle</strong>.
+                Ce qui m'anime&nbsp;: prendre un problème concret, le décomposer, puis construire
+                la solution la plus simple qui fonctionne — du prototype au code livré proprement.
+              </p>
+              <a class="about-cta" href="assets/cv_gaspard_vieujean.pdf" download>
+                <i class="fa-solid fa-download" aria-hidden="true"></i>
+                Télécharger mon CV
+              </a>
+            </div>
+          </div>
+
+          <!-- Bento : passions + expérience terrain -->
+          <div class="col-12 col-lg-7">
+            <div class="about-bento">
+
+              <article class="bento-card reveal">
+                <i class="fa-solid fa-music bento-watermark" aria-hidden="true"></i>
+                <p class="bento-label"><i class="fa-solid fa-music" aria-hidden="true"></i> Musique</p>
+                <ul class="hobby-tags list-unstyled m-0">
+                  <li class="hobby-tag">
+                    <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+                    Conservatoire · solfège
+                  </li>
+                  <li class="hobby-tag">
+                    <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" role="img" aria-hidden="true">
+                      <rect x="3" y="5" width="18" height="14" rx="1.5"/>
+                      <path d="M7.5 5v8M12 5v8M16.5 5v8M3 13h18"/>
+                    </svg>
+                    Piano
+                  </li>
+                  <li class="hobby-tag">
+                    <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" aria-hidden="true">
+                      <path d="M2 10h14M2 14h14"/>
+                      <path d="M16 10V8a4 4 0 0 1 4 4 4 4 0 0 1-4 4v-2"/>
+                      <path d="M21 5v14"/>
+                    </svg>
+                    Trombone
+                  </li>
+                </ul>
+              </article>
+
+              <article class="bento-card reveal">
+                <i class="fa-solid fa-person-running bento-watermark" aria-hidden="true"></i>
+                <p class="bento-label"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i> Sport</p>
+                <ul class="hobby-tags list-unstyled m-0">
+                  <li class="hobby-tag">
+                    <i class="fa-solid fa-dumbbell" aria-hidden="true"></i>
+                    Musculation
+                  </li>
+                  <li class="hobby-tag">
+                    <i class="fa-solid fa-person-running" aria-hidden="true"></i>
+                    Course à pied
+                  </li>
+                  <li class="hobby-tag">
+                    <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9"/>
+                      <path d="M5 5.5c3 2.5 3 10.5 0 13M19 5.5c-3 2.5-3 10.5 0 13"/>
+                    </svg>
+                    Tennis
+                  </li>
+                </ul>
+              </article>
+
+              <article class="bento-card bento-card--dark reveal">
+                <i class="fa-solid fa-bolt bento-watermark" aria-hidden="true"></i>
+                <p class="bento-label"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Expérience terrain</p>
+                <h3 class="bento-title">Bénévolat Technique</h3>
+                <p class="bento-sub">Festival du Bout du Monde — bénévole depuis plusieurs années</p>
+                <p class="bento-text">
+                  Chaque été, je participe au montage du festival&nbsp;: installation technique et
+                  électrique des espaces, logistique de terrain et coordination en équipe, avec des
+                  délais serrés et des conditions réelles. Le terrain, ça ne se simule pas.
+                </p>
+                <ul class="bento-facts">
+                  <li class="bento-fact"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Installation électrique</li>
+                  <li class="bento-fact"><i class="fa-solid fa-users" aria-hidden="true"></i> Travail d'équipe</li>
+                  <li class="bento-fact"><i class="fa-solid fa-truck-ramp-box" aria-hidden="true"></i> Logistique terrain</li>
+                </ul>
+              </article>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Compétences ═══ -->
+    <section class="skills" id="skills">
+      <div class="container-fluid">
+        <p class="section-label reveal"><span class="accent">02</span> — Compétences · stack technique</p>
+        <ul class="skills-grid list-unstyled m-0">
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-python"></i></span>
+            <h3 class="skill-name">Python</h3>
+            <p class="skill-sub">Pandas · NumPy · Matplotlib</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-js"></i></span>
+            <h3 class="skill-name">JavaScript</h3>
+            <p class="skill-sub">ES6+ · DOM · vanilla</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-html5"></i><i class="fa-brands fa-css3-alt"></i></span>
+            <h3 class="skill-name">HTML5 / CSS3</h3>
+            <p class="skill-sub">sémantique · responsive</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true">
+              <svg class="skill-svg" viewBox="0 0 24 24" fill="currentColor" role="img">
+                <path d="M12 6C9.33 6 7.67 7.33 7 10c1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.12 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C15.61 7.15 14.47 6 12 6zM7 12c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.12 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C11.61 13.15 10.47 12 7 12z"/>
+              </svg>
+            </span>
+            <h3 class="skill-name">Tailwind CSS</h3>
+            <p class="skill-sub">utility-first</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-php"></i></span>
+            <h3 class="skill-name">PHP</h3>
+            <p class="skill-sub">CakePHP · MVC</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true"><i class="fa-solid fa-database"></i></span>
+            <h3 class="skill-name">SQL</h3>
+            <p class="skill-sub">requêtes · modélisation</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons skill-glyph" aria-hidden="true">C/C++</span>
+            <h3 class="skill-name">C / C++</h3>
+            <p class="skill-sub">algorithmique · mémoire</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-linux"></i></span>
+            <h3 class="skill-name">Bash / Linux</h3>
+            <p class="skill-sub">scripting · ligne de commande</p>
+          </li>
+          <li class="skill-card reveal">
+            <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-git-alt"></i></span>
+            <h3 class="skill-name">Git</h3>
+            <p class="skill-sub">versioning · GitHub</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══ Projets ═══ -->
+    <section class="projects" id="projects">
+      <div class="container-fluid">
+        <p class="section-label reveal"><span class="accent">03</span> — Projets · flux GitHub en direct</p>
+        <div id="projects-list" aria-live="polite">
+          <p class="projects-loading">Chargement des dépôts…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Contact ═══ -->
+    <section class="contact" id="contact">
+      <!-- Portrait N&B en calque d'arrière-plan, purement décoratif -->
+      <img class="contact-photo" src="assets/img/portrait-nb.jpg" alt="" loading="lazy" width="1400" height="1400" aria-hidden="true">
+      <div class="container-fluid contact-inner">
+        <p class="section-label reveal"><span class="accent">04</span> — Contact</p>
+        <a href="mailto:gaspard.vieujean@outlook.com" class="contact-cta reveal"
+           aria-label="Envoyer un e-mail à Gaspard Vieujean à l'adresse gaspard.vieujean@outlook.com">Travaillons<br>ensemble<span class="accent">.</span></a>
+        <p class="contact-email reveal">
+          <a href="mailto:gaspard.vieujean@outlook.com" aria-label="Écrire à gaspard.vieujean@outlook.com">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            gaspard.vieujean@outlook.com
+          </a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ Footer ═══ -->
+  <footer class="site-footer">
+    <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <p class="footer-note">© 2026 Gaspard Vieujean — construit à la main.</p>
+      <div class="footer-links d-flex align-items-center">
+        <a href="https://github.com/Swe3fty" target="_blank" rel="noopener" class="magnetic" aria-label="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/gaspard-vieujean/" target="_blank" rel="noopener" class="magnetic" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:gaspard.vieujean@outlook.com" class="magnetic" aria-label="Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Zone pour intégration de composants UI-prox-max -->
+
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>
