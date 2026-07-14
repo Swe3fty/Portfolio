@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash('/c/Program Files/Google/Chrome/Application/chrome.exe' --headless=new --disable-gpu --window-size=1440,5200 --virtual-time-budget=8000 --screenshot=C:/Users/gaspa/AppData/Local/Temp/claude/D--Users-Gaspa-Projet-Informatique-Portfolio/a249e30a-77a3-4873-92de-27ead25c7a68/scratchpad/desktop-full.png file:///D:/Users/Gaspa/Projet%20Informatique/Portfolio/index.html)"
+    ]
+  }
+}

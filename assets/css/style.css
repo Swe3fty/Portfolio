@@ -1,0 +1,992 @@
+/* ═══════════════════════════════════════════════════════════════
+   Portfolio — Gaspard Vieujean
+   Ultra-minimalisme brutal & élégant · whitespace massif
+   Palette : monochrome #FAFAFA / #09090B + accent unique #2563EB
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --color-background: #FAFAFA;
+  --color-foreground: #09090B;
+  --color-secondary: #52525B;
+  --color-muted: #A1A1AA;
+  --color-border: #E4E4E7;
+  --color-accent: #2563EB;
+  --color-terminal-bg: #050505;
+  --color-terminal-green: #4ADE80;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+
+  --space-section: clamp(7rem, 18vh, 14rem);
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Base ─────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Curseur natif masqué uniquement en mode enhanced + pointeur précis */
+@media (pointer: fine) {
+  html.js.has-custom-cursor,
+  html.js.has-custom-cursor body,
+  html.js.has-custom-cursor a,
+  html.js.has-custom-cursor button {
+    cursor: none;
+  }
+}
+
+body.is-locked {
+  overflow: hidden;
+}
+
+.container-fluid {
+  padding-inline: var(--gutter);
+}
+
+::selection {
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+sup { font-size: 0.5em; }
+
+/* ─── Loader terminal ──────────────────────────────────────── */
+
+#loader-terminal {
+  display: none; /* jamais affiché sans JS */
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--color-terminal-bg);
+  color: var(--color-terminal-green);
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1.6vw, 1rem);
+  padding: clamp(1.5rem, 6vw, 4rem);
+  opacity: 1;
+  transition: opacity 0.7s var(--ease-out), visibility 0.7s;
+}
+
+html.js #loader-terminal {
+  display: block;
+}
+
+#loader-terminal.is-done {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.terminal-window {
+  max-width: 48rem;
+}
+
+.terminal-line {
+  margin: 0 0 0.4rem;
+  white-space: pre-wrap;
+}
+
+.terminal-prompt {
+  color: #86EFAC;
+}
+
+.terminal-output p {
+  margin: 0 0 0.4rem;
+  animation: term-in 0.25s var(--ease-out) both;
+}
+
+.terminal-output p:last-child::after {
+  content: '▊';
+  margin-left: 0.35em;
+  animation: blink 0.9s steps(1) infinite;
+}
+
+@keyframes term-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ─── Curseur custom ───────────────────────────────────────── */
+
+/* Taille native = état survolé (45px), réduit par défaut via scale.
+   Rastérisé grand puis réduit → toujours net ; l'inverse pixelise. */
+#custom-cursor {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  will-change: transform;
+}
+
+html.js.has-custom-cursor #custom-cursor {
+  display: block;
+}
+
+/* L'agrandissement (.cursor-hover) est interpolé en JS via scale()
+   pour rester cohérent avec le translate3d posé à chaque frame. */
+
+/* ─── Miniature hover-reveal ───────────────────────────────── */
+
+#project-preview {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: min(24rem, 34vw);
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+html.js #project-preview {
+  display: block;
+}
+
+#project-preview.is-visible {
+  opacity: 1;
+}
+
+#project-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.08);
+  transition: transform 0.6s var(--ease-out);
+}
+
+#project-preview.is-visible img {
+  transform: scale(1);
+}
+
+/* ─── Header ───────────────────────────────────────────────── */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding-block: 1.5rem;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+
+/* Le blend "difference" inverse les couleurs : cette valeur ressort
+   bleu accent (#2563EB) une fois composée sur le fond #FAFAFA */
+.site-header .accent {
+  color: #D5970F;
+}
+
+.nav-logo {
+  font-weight: 900;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+
+.nav-contact {
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.magnetic {
+  display: inline-block;
+  will-change: transform;
+  transition: transform 0.4s var(--ease-out);
+}
+
+/* ─── Hero ─────────────────────────────────────────────────── */
+
+.hero {
+  min-height: 100dvh;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: clamp(1rem, 3vh, 2.5rem);
+}
+
+.hero-title {
+  font-size: clamp(3.6rem, 13.5vw, 12.5rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  margin: 0 0 clamp(1.5rem, 4vh, 3rem);
+  background: linear-gradient(115deg, #09090B 55%, #52525B 82%, #2563EB 110%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2.6vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.hero-meta {
+  font-size: 0.95rem;
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  right: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.hero-scroll i {
+  animation: scroll-hint 2.2s var(--ease-out) infinite;
+}
+
+@keyframes scroll-hint {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%      { transform: translateY(6px); opacity: 0.4; }
+}
+
+/* ─── Portrait du Hero : bulle + ondes radar ───────────────── */
+
+.hero-portrait {
+  position: relative;
+  width: clamp(11rem, 22vw, 18rem);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
+.hero-portrait img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  /* fin liseré décollé, dans les couleurs du thème */
+  box-shadow: 0 0 0 10px var(--color-background), 0 0 0 11px var(--color-border);
+}
+
+/* Deux ondes concentriques très lentes, décalées d'une demi-période */
+.hero-portrait::before,
+.hero-portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--color-accent);
+  opacity: 0;
+  animation: radar 6s cubic-bezier(0, 0, 0.25, 1) infinite;
+}
+
+.hero-portrait::after {
+  border-color: var(--color-muted);
+  animation-delay: 3s;
+}
+
+@keyframes radar {
+  0%   { transform: scale(1);    opacity: 0.5; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+/* ─── Sections ─────────────────────────────────────────────── */
+
+.about,
+.skills,
+.projects,
+.contact {
+  padding-block: var(--space-section);
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: clamp(2.5rem, 7vh, 5rem);
+}
+
+/* ─── À propos ─────────────────────────────────────────────── */
+
+/* Titre-manifeste : reprend l'échelle du hero et du contact pour que
+   la section ait elle aussi son "moment" typographique */
+.about-statement {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(2.6rem, 7vw, 7rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  margin: 0 0 clamp(3rem, 8vh, 5.5rem);
+}
+
+/* Dernière ligne en contour ("ghost") ; se remplit au survol du titre.
+   Fallback : texte plein si text-stroke n'est pas supporté */
+.statement-line--ghost {
+  color: var(--color-foreground);
+}
+
+@supports (-webkit-text-stroke: 2px black) {
+  .statement-line--ghost {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-foreground);
+    transition: color 0.5s var(--ease-out);
+  }
+
+  .about-statement:hover .statement-line--ghost {
+    color: var(--color-foreground);
+  }
+}
+
+/* Le point final reste plein et bleu, même dans la ligne en contour */
+.statement-line--ghost .accent {
+  -webkit-text-stroke: 0px;
+  color: var(--color-accent);
+}
+
+/* Trait plus fin quand le corps de texte diminue */
+@media (max-width: 575px) {
+  .statement-line--ghost {
+    -webkit-text-stroke-width: 1.3px;
+  }
+}
+
+/* Cascade des trois lignes du manifeste */
+html.js .about-statement .reveal:nth-child(2) { transition-delay: 0.08s; }
+html.js .about-statement .reveal:nth-child(3) { transition-delay: 0.16s; }
+
+.about-text {
+  max-width: 34rem; /* ~65-75 caractères par ligne */
+  font-size: clamp(0.98rem, 1.4vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.about-text strong {
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+/* CTA CV — équiv. Tailwind : bg sombre, hover:-translate-y-1 + shadow-lg */
+.about-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(1.75rem, 4vh, 2.75rem);
+  padding: 1rem 1.9rem;
+  background: var(--color-foreground);
+  color: var(--color-background);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(9, 9, 11, 0.08);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out),
+              background 0.3s var(--ease-out);
+}
+
+.about-cta:hover {
+  transform: translateY(-4px);
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 18px 35px -12px rgba(37, 99, 235, 0.45);
+}
+
+.about-cta i {
+  font-size: 0.9em;
+}
+
+/* Bento : même grille "hairline" 1px que les compétences */
+.about-bento {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+}
+
+.bento-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-background);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  margin: 0;
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+/* Même langage de survol que les tuiles compétences */
+.bento-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 45px -20px rgba(9, 9, 11, 0.25);
+  z-index: 1;
+}
+
+/* Icône filigrane surdimensionnée : remplit le vide des cartes courtes */
+.bento-watermark {
+  position: absolute;
+  right: -0.75rem;
+  bottom: -1.5rem;
+  font-size: clamp(6rem, 11vw, 9.5rem);
+  color: var(--color-foreground);
+  opacity: 0.05;
+  pointer-events: none;
+  transform: rotate(-8deg);
+  transition: transform 0.6s var(--ease-out), opacity 0.6s var(--ease-out);
+}
+
+.bento-card:hover .bento-watermark {
+  transform: rotate(0deg) scale(1.06);
+  opacity: 0.09;
+}
+
+.bento-card--dark .bento-watermark {
+  color: #60A5FA;
+  opacity: 0.1;
+}
+
+.bento-card--dark:hover .bento-watermark {
+  opacity: 0.16;
+}
+
+.bento-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 1.25rem;
+}
+
+.bento-label i {
+  color: var(--color-accent);
+  font-size: 0.95rem;
+}
+
+/* Tags hobbies : pilules mono avec micro-élévation au survol */
+.hobby-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.hobby-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-secondary);
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out),
+              color 0.3s var(--ease-out);
+}
+
+.hobby-tag i,
+.hobby-tag .tag-svg {
+  color: var(--color-foreground);
+  font-size: 0.9rem;
+}
+
+.tag-svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.hobby-tag:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-accent);
+  color: var(--color-foreground);
+}
+
+/* Carte bénévolat — inversée (pleine largeur du bento), accent #60A5FA
+   sur fond sombre comme dans la section Contact (contraste AA) */
+.bento-card--dark {
+  grid-column: 1 / -1;
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+.bento-card--dark .bento-label {
+  color: var(--color-muted);
+}
+
+.bento-card--dark .bento-label i {
+  color: #60A5FA;
+}
+
+.bento-title {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+.bento-sub {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin: 0 0 1.1rem;
+}
+
+.bento-text {
+  max-width: 44rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #D4D4D8;
+  margin: 0 0 1.5rem;
+}
+
+.bento-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bento-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid #27272A;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-border);
+}
+
+.bento-fact i {
+  color: #60A5FA;
+}
+
+@media (max-width: 575px) {
+  .about-bento {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Apparition en cascade des cartes du bento */
+html.js .about-bento .reveal:nth-child(2) { transition-delay: 0.08s; }
+html.js .about-bento .reveal:nth-child(3) { transition-delay: 0.16s; }
+
+/* ─── Compétences ──────────────────────────────────────────── */
+
+/* Grille "hairline" : le fond du <ul> teinte les interstices de 1px */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+}
+
+.skill-card {
+  position: relative;
+  background: var(--color-background);
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2vw, 1.75rem);
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+/* Survol : légère élévation (équiv. Tailwind scale-105 + shadow douce) */
+.skill-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 45px -20px rgba(9, 9, 11, 0.25);
+  z-index: 1;
+}
+
+.skill-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 2.1rem;
+  margin-bottom: 1.1rem;
+  font-size: 1.9rem;
+  color: var(--color-secondary);
+  transition: color 0.3s var(--ease-out);
+}
+
+/* Couleurs officielles des technos */
+.skill-icons .fa-python { color: #3776AB; }
+.skill-icons .fa-js { color: #F7DF1E; }
+.skill-icons .fa-html5 { color: #E34F26; }
+.skill-icons .fa-css3-alt { color: #1572B6; }
+.skill-icons .skill-svg { color: #06B6D4; }
+.skill-icons .fa-php { color: #777BB4; }
+.skill-icons .fa-database { color: #F29111; }
+.skill-icons .fa-linux { color: #09090B; }
+.skill-icons .fa-git-alt { color: #F05032; }
+.skill-icons.skill-glyph { color: #00599C; }
+
+.skill-svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.skill-glyph {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.skill-name {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.3rem;
+}
+
+.skill-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* Apparition en cascade des tuiles */
+html.js .skills-grid .reveal:nth-child(2) { transition-delay: 0.06s; }
+html.js .skills-grid .reveal:nth-child(3) { transition-delay: 0.12s; }
+html.js .skills-grid .reveal:nth-child(4) { transition-delay: 0.18s; }
+html.js .skills-grid .reveal:nth-child(5) { transition-delay: 0.24s; }
+html.js .skills-grid .reveal:nth-child(6) { transition-delay: 0.30s; }
+html.js .skills-grid .reveal:nth-child(7) { transition-delay: 0.36s; }
+html.js .skills-grid .reveal:nth-child(8) { transition-delay: 0.42s; }
+html.js .skills-grid .reveal:nth-child(9) { transition-delay: 0.48s; }
+
+/* ─── Liste de projets ─────────────────────────────────────── */
+
+.projects-loading,
+.projects-error {
+  font-family: var(--font-mono);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.project-item {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding-block: clamp(1.5rem, 4vh, 3rem);
+  border-top: 1px solid var(--color-border);
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.project-item:last-child {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Focus sur l'item survolé : les autres s'estompent */
+#projects-list:hover .project-item {
+  opacity: 0.22;
+}
+
+#projects-list .project-item:hover,
+#projects-list .project-item:focus-visible {
+  opacity: 1;
+}
+
+.project-index {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  min-width: 2.2rem;
+}
+
+.project-title {
+  font-size: clamp(2.2rem, 7vw, 6.25rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  margin: 0;
+  flex: 1;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.project-item:hover .project-title {
+  transform: translateX(clamp(0.5rem, 2vw, 1.5rem));
+}
+
+.project-meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-secondary);
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .project-item {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  .project-title {
+    flex-basis: 100%;
+    order: 2;
+  }
+  .project-meta { order: 3; }
+}
+
+/* ─── Contact ──────────────────────────────────────────────── */
+/* Section inversée : fond noir, portrait N&B en calque à droite.
+   Sur fond #09090B l'accent passe à #60A5FA (contraste AA ≥ 4.5). */
+
+.contact {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+.contact .accent {
+  color: #60A5FA;
+}
+
+.contact-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(46%, 42rem);
+  object-fit: cover;
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+/* Calque sombre : fond le portrait dans la section, garantit le
+   contraste du texte quelle que soit la largeur d'écran */
+.contact::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    #09090B 42%,
+    rgba(9, 9, 11, 0.72) 68%,
+    rgba(9, 9, 11, 0.28) 100%);
+  pointer-events: none;
+}
+
+.contact-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-cta {
+  display: inline-block;
+  font-size: clamp(3rem, 10vw, 9rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  transition: color 0.3s var(--ease-out);
+}
+
+.contact-cta:hover {
+  color: #60A5FA;
+}
+
+/* Focus clavier bien visible sur fond sombre (équiv. focus:ring) */
+.contact-cta:focus-visible,
+.contact-email a:focus-visible {
+  outline: 2px solid #60A5FA;
+  outline-offset: 6px;
+  box-shadow: 0 0 0 12px rgba(96, 165, 250, 0.22);
+  border-radius: 6px;
+}
+
+.contact-email {
+  margin: clamp(2rem, 5vh, 3.5rem) 0 0;
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+}
+
+.contact-email a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #E4E4E7;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-color: rgba(228, 228, 231, 0.35);
+  transition: color 0.3s var(--ease-out), text-decoration-color 0.3s var(--ease-out);
+  padding: 0.5rem 0; /* zone cliquable confortable */
+}
+
+.contact-email a:hover {
+  color: #93C5FD;
+  text-decoration-color: currentColor;
+}
+
+@media (max-width: 991px) {
+  /* Le portrait devient un arrière-plan pleine largeur très estompé */
+  .contact-photo {
+    width: 100%;
+    opacity: 0.3;
+    object-position: center 20%;
+  }
+  .contact::after {
+    background: linear-gradient(180deg,
+      rgba(9, 9, 11, 0.82) 0%,
+      rgba(9, 9, 11, 0.62) 100%);
+  }
+}
+
+/* ─── Footer ───────────────────────────────────────────────── */
+
+.site-footer {
+  padding-block: 2.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-note {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.footer-links {
+  gap: 1.75rem;
+}
+
+.footer-links a {
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+  transition: color 0.3s var(--ease-out);
+  padding: 0.6rem; /* zone tactile ≥ 44px */
+  margin: -0.6rem;
+}
+
+.footer-links a:hover {
+  color: var(--color-foreground);
+}
+
+/* ─── Reveal au scroll (progressive enhancement) ───────────── */
+/* Ne masque le contenu QUE si le JS tourne (classe .js posée
+   dans <head>) — jamais en CSS pur. Convention du projet. */
+
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── Accessibilité : mouvement réduit ─────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hero-scroll i,
+  .terminal-output p,
+  .terminal-output p:last-child::after,
+  .hero-portrait::before,
+  .hero-portrait::after {
+    animation: none;
+  }
+
+  .magnetic,
+  .project-title,
+  .skill-card,
+  .skill-icons,
+  .about-cta,
+  .hobby-tag,
+  .bento-card,
+  .bento-watermark,
+  .statement-line--ghost,
+  #project-preview,
+  #project-preview img {
+    transition: none;
+  }
+
+  .skill-card:hover,
+  .about-cta:hover,
+  .hobby-tag:hover,
+  .bento-card:hover {
+    transform: none;
+  }
+
+  /* Le filigrane garde son inclinaison de repos, sans animation */
+  .bento-card:hover .bento-watermark {
+    transform: rotate(-8deg);
+    opacity: 0.05;
+  }
+
+  .bento-card--dark:hover .bento-watermark {
+    opacity: 0.1;
+  }
+}
