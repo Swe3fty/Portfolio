@@ -313,6 +313,13 @@ html.js #project-preview {
   flex-shrink: 0;
 }
 
+/* Sur desktop, décollée du bord droit pour mieux équilibrer avec le titre */
+@media (min-width: 992px) {
+  .hero-portrait {
+    margin-right: clamp(2rem, 5vw, 6rem);
+  }
+}
+
 .hero-portrait img {
   position: relative;
   z-index: 1;
@@ -353,6 +360,12 @@ html.js #project-preview {
 .projects,
 .contact {
   padding-block: var(--space-section);
+}
+
+/* Le hero (100dvh, contenu centré) laisse déjà beaucoup de vide sous lui :
+   on compense en resserrant le haut de la section suivante */
+.about {
+  padding-top: clamp(2.5rem, 6vh, 5rem);
 }
 
 .section-label {
@@ -677,17 +690,12 @@ html.js .about-bento .reveal:nth-child(3) { transition-delay: 0.16s; }
 .skill-icons .fa-js { color: #F7DF1E; }
 .skill-icons .fa-html5 { color: #E34F26; }
 .skill-icons .fa-css3-alt { color: #1572B6; }
-.skill-icons .skill-svg { color: #06B6D4; }
+.skill-icons .fa-bootstrap { color: #7952B3; }
 .skill-icons .fa-php { color: #777BB4; }
 .skill-icons .fa-database { color: #F29111; }
 .skill-icons .fa-linux { color: #09090B; }
 .skill-icons .fa-git-alt { color: #F05032; }
 .skill-icons.skill-glyph { color: #00599C; }
-
-.skill-svg {
-  width: 1.15em;
-  height: 1.15em;
-}
 
 .skill-glyph {
   font-family: var(--font-mono);
