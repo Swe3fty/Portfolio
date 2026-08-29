@@ -5,10 +5,301 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gaspard Vieujean | Portfolio</title>
+
+  <!--Présentation navigateur-->
+  <meta name="description" content="Portfolio de Gaspard Vieujean, étudiant ingénieur à l'ISEN Brest — Data &amp; Intelligence artificielle.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2309090B'/%3E%3Cpath d='M8 11l6 5-6 5' stroke='%232563EB' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 21h8' stroke='%23FAFAFA' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Active le mode "enhanced" avant le premier paint : sans JS (ex. blocage file://), tout le contenu reste visible et le loader n'apparaît jamais -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Bootstrap 5.3 (grille + reboot typographique) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
 
-</body>
+  <!-- ═══ Loader terminal ═══ -->
+  <div id="loader-terminal" aria-hidden="true">
+    <div class="terminal-window">
+      <p class="terminal-line terminal-prompt">gaspard@isen-brest:~$ ./portfolio --init</p>
+      <div class="terminal-output"></div>
+    </div>
+  </div>
 
+  <!-- ═══ Curseur custom ═══ -->
+  <div id="custom-cursor" aria-hidden="true"></div>
+
+  <!-- ═══ Miniature hover-reveal des projets ═══ -->
+  <div id="project-preview" aria-hidden="true">
+    <img src="" alt="" width="1200" height="600">
+  </div>
+
+  <!-- ═══ Navigation ═══ -->
+  <header class="site-header">
+    <nav>
+      <a href="#top" class="nav-logo">GV<span class="accent">.</span></a>
+      <a href="#contact" class="nav-contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ═══ Hero ═══ -->
+    <section class="hero">
+      <p class="hero-eyebrow">Portfolio — 2026</p>
+      <h1 class="hero-title">Gaspard<br>Vieujean</h1>
+      <p class="hero-subtitle">Étudiant en ingénierie IA<span class="accent">_</span></p>
+      <p class="hero-meta">Étudiant ingénieur · ISEN Brest · 4<sup>e</sup> année</p>
+
+      <div class="hero-portrait">
+        <img src="assets/img/portrait-couleur.jpg" alt="Portrait de Gaspard Vieujean" width="1000" height="1000">
+      </div>
+
+      <div class="hero-scroll" aria-hidden="true">
+        <span>défiler</span>
+        <i class="fa-solid fa-arrow-down-long"></i>
+      </div>
+    </section>
+
+    <!-- ═══ À propos ═══ -->
+    <section class="about" id="about">
+      <p class="section-label"><span class="accent">01</span> — À propos</p>
+
+      <h2 class="about-statement">
+        <span class="statement-line">Comprendre,</span>
+        <span class="statement-line">construire,</span>
+        <span class="statement-line statement-line--ghost">résoudre<span class="accent">.</span></span>
+      </h2>
+
+      <!-- Présentation + CV -->
+      <div class="about-intro">
+        <p class="about-text">
+          Étudiant ingénieur en 4<sup>e</sup> année à l'ISEN Brest, je me spécialise en
+          <strong>intelligence artificielle</strong>.
+          Ce qui me motive : prendre un problème concret, le décomposer, puis construire
+          une solution la plus simple qui fonctionne - du prototype au code livré proprement.
+        </p>
+        <a class="about-cta" href="assets/cv_gaspard_vieujean.pdf" download>
+          <i class="fa-solid fa-download" aria-hidden="true"></i>
+          Télécharger mon CV
+        </a>
+      </div>
+
+      <!-- Bento : passions + expérience terrain -->
+      <div class="about-passions">
+
+        <article class="passion">
+          <div class="passion-orb">
+            <i class="fa-solid fa-music" aria-hidden="true"></i>
+          </div>
+          <p class="passion-name">Musique</p>
+          <ul class="hobby-tags">
+            <li class="hobby-tag">
+              <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+              Conservatoire · théorie musicale
+            </li>
+            <li class="hobby-tag">
+              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" role="img" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="1.5"/>
+                <path d="M7.5 5v8M12 5v8M16.5 5v8M3 13h18"/>
+              </svg>
+              Piano
+            </li>
+            <li class="hobby-tag">
+              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" aria-hidden="true">
+                <path d="M2 10h14M2 14h14"/>
+                <path d="M16 10V8a4 4 0 0 1 4 4 4 4 0 0 1-4 4v-2"/>
+                <path d="M21 5v14"/>
+              </svg>
+              Trombone
+            </li>
+          </ul>
+        </article>
+
+        <article class="passion">
+          <div class="passion-orb">
+            <i class="fa-solid fa-dumbbell" aria-hidden="true"></i>
+          </div>
+          <p class="passion-name">Sport</p>
+          <ul class="hobby-tags">
+            <li class="hobby-tag">
+              <i class="fa-solid fa-dumbbell" aria-hidden="true"></i>
+              Musculation
+            </li>
+            <li class="hobby-tag">
+              <i class="fa-solid fa-person-running" aria-hidden="true"></i>
+              Course à pied
+            </li>
+            <li class="hobby-tag">
+              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M5 5.5c3 2.5 3 10.5 0 13M19 5.5c-3 2.5-3 10.5 0 13"/>
+              </svg>
+              Tennis
+            </li>
+          </ul>
+        </article>
+
+      </div>
+
+      <article class="experience">
+        <i class="fa-solid fa-bolt experience-watermark" aria-hidden="true"></i>
+        <div class="experience-badge" aria-hidden="true">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="experience-body">
+          <p class="experience-label">Expérience terrain</p>
+          <h3 class="experience-title">Bénévolat technique</h3>
+          <p class="experience-sub">Festival du Bout du Monde — bénévole depuis plusieurs années</p>
+          <p class="experience-text">
+            Chaque été, je participe au montage du festival : installation technique et
+            électrique des espaces, logistique sur site (installation de matériel), dans des
+            délais serrés et des conditions réelles.
+          </p>
+          <ul class="experience-facts">
+            <li class="experience-fact"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Installation électrique</li>
+            <li class="experience-fact"><i class="fa-solid fa-users" aria-hidden="true"></i> Travail d'équipe</li>
+            <li class="experience-fact"><i class="fa-solid fa-truck-ramp-box" aria-hidden="true"></i> Logistique sur site</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- ═══ Compétences ═══ -->
+    <section class="skills" id="skills">
+      <p class="section-label"><span class="accent">02</span> — Compétences · stack technique</p>
+
+      <p class="skills-subhead">Langages &amp; développement</p>
+      <ul class="skills-grid">
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-python"></i></span>
+          <h3 class="skill-name">Python</h3>
+          <p class="skill-sub">Pandas · NumPy · Matplotlib</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-js"></i></span>
+          <h3 class="skill-name">JavaScript</h3>
+          <p class="skill-sub">ES6+ · DOM · vanilla</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-html5"></i><i class="fa-brands fa-css3-alt"></i></span>
+          <h3 class="skill-name">HTML5 / CSS3</h3>
+          <p class="skill-sub">sémantique · responsive</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-bootstrap"></i></span>
+          <h3 class="skill-name">Bootstrap</h3>
+          <p class="skill-sub">grille · composants</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-php"></i></span>
+          <h3 class="skill-name">PHP</h3>
+          <p class="skill-sub">CakePHP · MVC</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-solid fa-database"></i></span>
+          <h3 class="skill-name">SQL</h3>
+          <p class="skill-sub">requêtes · modélisation</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons skill-glyph" aria-hidden="true">C/C++</span>
+          <h3 class="skill-name">C / C++</h3>
+          <p class="skill-sub">algorithmes · mémoire</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-linux"></i></span>
+          <h3 class="skill-name">Bash / Linux</h3>
+          <p class="skill-sub">scripts · ligne de commande</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-git-alt"></i></span>
+          <h3 class="skill-name">Git</h3>
+          <p class="skill-sub">gestion de versions · GitHub</p>
+        </li>
+      </ul>
+
+      <p class="skills-subhead">Outils &amp; logiciels</p>
+      <ul class="skills-grid">
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true">
+            <svg class="skill-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/>
+              <path d="M9 16V8l6 8V8"/>
+            </svg>
+          </span>
+          <h3 class="skill-name">Notion</h3>
+          <p class="skill-sub">notes · organisation</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-solid fa-file-excel"></i></span>
+          <h3 class="skill-name">Excel</h3>
+          <p class="skill-sub">tableurs · formules</p>
+        </li>
+        <li class="skill-card">
+          <span class="skill-icons" aria-hidden="true"><i class="fa-brands fa-figma"></i></span>
+          <h3 class="skill-name">Figma</h3>
+          <p class="skill-sub">maquettes · UI</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ═══ Projets ═══ -->
+    <section class="projects" id="projects">
+      <p class="section-label"><span class="accent">03</span> — Projets · flux GitHub en direct</p>
+      <div id="projects-list" aria-live="polite">
+        <p class="projects-loading">Chargement des dépôts…</p>
+      </div>
+    </section>
+
+    <!-- ═══ Contact ═══ -->
+    <section class="contact" id="contact">
+      <!-- Portrait N&B en calque d'arrière-plan, purement décoratif -->
+      <img class="contact-photo" src="assets/img/portrait-nb.jpg" alt="" loading="lazy" width="1400" height="1400" aria-hidden="true">
+      <div class="contact-inner">
+        <p class="section-label"><span class="accent">04</span> — Contact</p>
+        <a href="mailto:gaspard.vieujean@outlook.com" class="contact-cta"
+           aria-label="Envoyer un e-mail à Gaspard Vieujean à gaspard.vieujean@outlook.com">Travaillons<br>ensemble<span class="accent">.</span></a>
+        <p class="contact-email">
+          <a href="mailto:gaspard.vieujean@outlook.com" aria-label="E-mail gaspard.vieujean@outlook.com">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            gaspard.vieujean@outlook.com
+          </a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ Footer ═══ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-note">© 2026 Gaspard Vieujean</p>
+      <div class="footer-links">
+        <a href="https://github.com/Swe3fty" target="_blank" rel="noopener" aria-label="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/gaspard-vieujean/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:gaspard.vieujean@outlook.com" aria-label="E-mail">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js" defer></script>
+
+</body>
 </html>
