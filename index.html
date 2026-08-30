@@ -8,6 +8,14 @@
 
   <!--Présentation navigateur-->
   <meta name="description" content="Portfolio de Gaspard Vieujean, étudiant ingénieur à l'ISEN Brest — Data &amp; Intelligence artificielle.">
+
+  <!-- Open Graph / Twitter Card (aperçu de partage) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gaspard Vieujean | Portfolio">
+  <meta property="og:description" content="Portfolio de Gaspard Vieujean, étudiant ingénieur à l'ISEN Brest — Data &amp; Intelligence artificielle.">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO (étape 7, contenu réel) : ajouter og:image et og:url en URLs absolues une fois le domaine d'hébergement connu -->
+
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2309090B'/%3E%3Cpath d='M8 11l6 5-6 5' stroke='%232563EB' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 21h8' stroke='%23FAFAFA' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 
   <!-- Active le mode "enhanced" avant le premier paint : sans JS (ex. blocage file://), tout le contenu reste visible et le loader n'apparaît jamais -->
@@ -42,7 +50,7 @@
 
   <!-- ═══ Miniature hover-reveal des projets ═══ -->
   <div id="project-preview" aria-hidden="true">
-    <img src="" alt="" width="1200" height="600">
+    <!--<img src="" alt="" width="1200" height="600">-->
   </div>
 
   <!-- ═══ Navigation ═══ -->
@@ -74,13 +82,13 @@
 
     <!-- ═══ À propos ═══ -->
     <section class="about" id="about">
-      <p class="section-label"><span class="accent">01</span> — À propos</p>
+      <h2 class="section-label"><span class="accent">01</span> — À propos</h2>
 
-      <h2 class="about-statement">
+      <h3 class="about-statement">
         <span class="statement-line">Comprendre,</span>
         <span class="statement-line">construire,</span>
         <span class="statement-line statement-line--ghost">résoudre<span class="accent">.</span></span>
-      </h2>
+      </h3>
 
       <!-- Présentation + CV -->
       <div class="about-intro">
@@ -110,14 +118,14 @@
               Conservatoire · théorie musicale
             </li>
             <li class="hobby-tag">
-              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" role="img" aria-hidden="true">
+              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
                 <rect x="3" y="5" width="18" height="14" rx="1.5"/>
                 <path d="M7.5 5v8M12 5v8M16.5 5v8M3 13h18"/>
               </svg>
               Piano
             </li>
             <li class="hobby-tag">
-              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" aria-hidden="true">
+              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                 <path d="M2 10h14M2 14h14"/>
                 <path d="M16 10V8a4 4 0 0 1 4 4 4 4 0 0 1-4 4v-2"/>
                 <path d="M21 5v14"/>
@@ -142,7 +150,7 @@
               Course à pied
             </li>
             <li class="hobby-tag">
-              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" aria-hidden="true">
+              <svg class="tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="9"/>
                 <path d="M5 5.5c3 2.5 3 10.5 0 13M19 5.5c-3 2.5-3 10.5 0 13"/>
               </svg>
@@ -178,7 +186,7 @@
 
     <!-- ═══ Compétences ═══ -->
     <section class="skills" id="skills">
-      <p class="section-label"><span class="accent">02</span> — Compétences · stack technique</p>
+      <h2 class="section-label"><span class="accent">02</span> — Compétences · stack technique</h2>
 
       <p class="skills-subhead">Langages &amp; développement</p>
       <ul class="skills-grid">
@@ -233,7 +241,7 @@
       <ul class="skills-grid">
         <li class="skill-card">
           <span class="skill-icons" aria-hidden="true">
-            <svg class="skill-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-hidden="true">
+            <svg class="skill-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/>
               <path d="M9 16V8l6 8V8"/>
             </svg>
@@ -256,7 +264,7 @@
 
     <!-- ═══ Projets ═══ -->
     <section class="projects" id="projects">
-      <p class="section-label"><span class="accent">03</span> — Projets · flux GitHub en direct</p>
+      <h2 class="section-label"><span class="accent">03</span> — Projets · flux GitHub en direct</h2>
       <div id="projects-list" aria-live="polite">
         <p class="projects-loading">Chargement des dépôts…</p>
       </div>
@@ -267,7 +275,7 @@
       <!-- Portrait N&B en calque d'arrière-plan, purement décoratif -->
       <img class="contact-photo" src="assets/img/portrait-nb.jpg" alt="" loading="lazy" width="1400" height="1400" aria-hidden="true">
       <div class="contact-inner">
-        <p class="section-label"><span class="accent">04</span> — Contact</p>
+        <h2 class="section-label"><span class="accent">04</span> — Contact</h2>
         <a href="mailto:gaspard.vieujean@outlook.com" class="contact-cta"
            aria-label="Envoyer un e-mail à Gaspard Vieujean à gaspard.vieujean@outlook.com">Travaillons<br>ensemble<span class="accent">.</span></a>
         <p class="contact-email">
@@ -287,13 +295,13 @@
       <p class="footer-note">© 2026 Gaspard Vieujean</p>
       <div class="footer-links">
         <a href="https://github.com/Swe3fty" target="_blank" rel="noopener" aria-label="GitHub">
-          <i class="fa-brands fa-github"></i>
+          <i class="fa-brands fa-github" aria-hidden="true"></i>
         </a>
         <a href="https://www.linkedin.com/in/gaspard-vieujean/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <i class="fa-brands fa-linkedin-in"></i>
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
         </a>
         <a href="mailto:gaspard.vieujean@outlook.com" aria-label="E-mail">
-          <i class="fa-solid fa-envelope"></i>
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
         </a>
       </div>
     </div>
