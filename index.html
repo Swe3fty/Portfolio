@@ -55,7 +55,7 @@
 
   <!-- ═══ Navigation ═══ -->
   <header class="site-header">
-    <nav>
+    <nav class="container-fluid d-flex justify-content-between align-items-center">
       <a href="#top" class="nav-logo">GV<span class="accent">.</span></a>
       <a href="#contact" class="nav-contact">Contact</a>
     </nav>
@@ -65,13 +65,15 @@
 
     <!-- ═══ Hero ═══ -->
     <section class="hero">
-      <p class="hero-eyebrow">Portfolio — 2026</p>
-      <h1 class="hero-title">Gaspard<br>Vieujean</h1>
-      <p class="hero-subtitle">Étudiant en ingénierie IA<span class="accent">_</span></p>
-      <p class="hero-meta">Étudiant ingénieur · ISEN Brest · 4<sup>e</sup> année</p>
+      <div class="container-fluid">
+        <p class="hero-eyebrow">Portfolio — 2026</p>
+        <h1 class="hero-title">Gaspard<br>Vieujean</h1>
+        <p class="hero-subtitle">Étudiant en ingénierie IA<span class="accent">_</span></p>
+        <p class="hero-meta">Étudiant ingénieur · ISEN Brest · 4<sup>e</sup> année</p>
 
-      <div class="hero-portrait">
-        <img src="assets/img/portrait-couleur.jpg" alt="Portrait de Gaspard Vieujean" width="1000" height="1000">
+        <div class="hero-portrait">
+          <img src="assets/img/portrait-couleur.jpg" alt="Portrait de Gaspard Vieujean" width="1000" height="1000">
+        </div>
       </div>
 
       <div class="hero-scroll" aria-hidden="true">
@@ -82,6 +84,7 @@
 
     <!-- ═══ À propos ═══ -->
     <section class="about" id="about">
+      <div class="container-fluid">
       <h2 class="section-label"><span class="accent">01</span> — À propos</h2>
 
       <h3 class="about-statement">
@@ -182,10 +185,12 @@
           </ul>
         </div>
       </article>
+      </div>
     </section>
 
     <!-- ═══ Compétences ═══ -->
     <section class="skills" id="skills">
+      <div class="container-fluid">
       <h2 class="section-label"><span class="accent">02</span> — Compétences · stack technique</h2>
 
       <p class="skills-subhead">Langages &amp; développement</p>
@@ -260,13 +265,16 @@
           <p class="skill-sub">maquettes · UI</p>
         </li>
       </ul>
+      </div>
     </section>
 
     <!-- ═══ Projets ═══ -->
     <section class="projects" id="projects">
+      <div class="container-fluid">
       <h2 class="section-label"><span class="accent">03</span> — Projets · flux GitHub en direct</h2>
       <div id="projects-list" aria-live="polite">
         <p class="projects-loading">Chargement des dépôts…</p>
+      </div>
       </div>
     </section>
 
@@ -274,7 +282,7 @@
     <section class="contact" id="contact">
       <!-- Portrait N&B en calque d'arrière-plan, purement décoratif -->
       <img class="contact-photo" src="assets/img/portrait-nb.jpg" alt="" loading="lazy" width="1400" height="1400" aria-hidden="true">
-      <div class="contact-inner">
+      <div class="contact-inner container-fluid">
         <h2 class="section-label"><span class="accent">04</span> — Contact</h2>
         <a href="mailto:gaspard.vieujean@outlook.com" class="contact-cta"
            aria-label="Envoyer un e-mail à Gaspard Vieujean à gaspard.vieujean@outlook.com">Travaillons<br>ensemble<span class="accent">.</span></a>
@@ -291,7 +299,7 @@
 
   <!-- ═══ Footer ═══ -->
   <footer class="site-footer">
-    <div class="footer-inner">
+    <div class="footer-inner container-fluid d-flex flex-wrap justify-content-between align-items-center">
       <p class="footer-note">© 2026 Gaspard Vieujean</p>
       <div class="footer-links">
         <a href="https://github.com/Swe3fty" target="_blank" rel="noopener" aria-label="GitHub">
