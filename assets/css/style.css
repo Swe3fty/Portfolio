@@ -1,1 +1,98 @@
-/* étape 1 : reset + tokens */
+/* ================================================================
+   Portfolio — Gaspard Vieujean
+   ================================================================ */
+
+/* === 1. Design tokens === */
+
+:root {
+  --color-background:     #FAFAFA;
+  --color-foreground:     #09090B;
+  --color-secondary:      #52525B;
+  --color-muted:          #A1A1AA;
+  --color-border:         #E4E4E7;
+  --color-accent:         #2563EB;
+  --color-terminal-bg:    #050505;
+  --color-terminal-green: #4ADE80;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+
+  --space-section: clamp(7rem, 18vh, 14rem);
+  --space-gutter:        clamp(1.25rem, 4vw, 4rem);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* === 2. Reset & base === */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /*overflow-x: hidden;*/
+}
+
+/* Pseudo Element activité a la sélection de texte */
+::selection {
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Focus du clavier */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+sup {
+  font-size: 0.5em;
+}
+
+/* === 3. Intégration grille Bootstrap === */
+
+.container-fluid {
+  padding-inline: var(--space-gutter);
+}
+
+/* === 4. Rythme macro des sections === */
+
+.about,
+.skills,
+.projects,
+.contact {
+  padding-block: var(--space-section);
+}
+
+/* === 5. Header === TODO étape 4 (chrome) */
+
+/* === 6. Hero === TODO étape 4 */
+
+/* === 7. À propos === TODO étape 4 */
+
+/* === 8. Compétences === TODO étape 4 */
+
+/* === 9. Projets === TODO étape 4 */
+
+/* === 10. Contact === TODO étape 4 */
+
+/* === 11. Footer === TODO étape 4 (chrome) */
+
+/* === 12. Overlays (loader terminal / curseur custom / preview projet) === TODO étape JS */
+
+/* === 13. prefers-reduced-motion === TODO étape animations */
