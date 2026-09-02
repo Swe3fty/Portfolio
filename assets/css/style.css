@@ -219,9 +219,429 @@ sup {
   100% { transform: scale(1.5); opacity: 0; }
 }
 
-/* === 7. À propos === TODO étape 4 */
+/* === 7. À propos === */
 
-/* === 8. Compétences === TODO étape 4 */
+/* Le hero (100dvh, contenu centré) laisse déjà beaucoup de vide sous lui :
+   on compense en resserrant le haut de cette section */
+.about {
+  padding-top: clamp(2.5rem, 5vh, 5rem);
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: clamp(2.5rem, 7vh, 5rem);
+}
+
+/* Titre-manifeste : reprend l'échelle du hero pour que la section
+   ait elle aussi son "moment" typographique */
+.about-statement {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(2.6rem, 7vw, 7rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  margin: 0 0 clamp(3rem, 7vh, 5.5rem);
+}
+
+/* Dernière ligne en contour ("ghost") ; se remplit au survol du titre.
+   Fallback : texte plein si text-stroke n'est pas supporté */
+.statement-line--ghost {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-foreground);
+  transition: color 0.5s var(--ease-out);
+}
+
+.about-statement:hover .statement-line--ghost {
+  color: var(--color-foreground);
+}
+
+/* Le point final reste plein et bleu, même dans la ligne en contour */
+.statement-line--ghost .accent {
+  -webkit-text-stroke: 0px;
+  color: var(--color-accent);
+}
+
+@media (max-width: 575px) {
+  .statement-line--ghost {
+    -webkit-text-stroke-width: 1.3px;
+  }
+}
+
+.about-text {
+  max-width: 34rem; /* ~65-75 caractères par ligne */
+  font-size: clamp(0.98rem, 1.4vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.about-text strong {
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.about-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(1.75rem, 4vh, 2.75rem);
+  padding: 1rem 1.9rem;
+  background: var(--color-foreground);
+  color: var(--color-background);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(9, 9, 11, 0.08);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out),
+              background 0.3s var(--ease-out);
+}
+
+.about-cta:hover {
+  transform: translateY(-4px);
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 18px 35px -12px rgba(37, 99, 235, 0.45);
+}
+
+.about-cta i {
+  font-size: 0.9em;
+}
+
+/* Remonte la colonne de droite (passions + expérience) pour la faire
+   venir à côté du titre plutôt que de suivre le texte de gauche */
+@media (min-width: 992px) {
+  .about .col-lg-7 {
+    margin-top: -6rem;
+  }
+}
+
+/* Passions : médaillons ronds (écho des ondes du portrait) */
+
+.about-passions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.passion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Le cercle : icône centrée, anneau fin. L'anneau concentrique
+   apparaît au survol, comme les ondes "radar" du hero */
+.passion-orb {
+  position: relative; /*ancrage pour les :before*/
+  display: grid;
+  place-items: center;
+  width: clamp(6.5rem, 15vw, 9.5rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+  transition: transform 0.5s var(--ease-out), border-color 0.5s var(--ease-out),
+              color 0.5s var(--ease-out);
+}
+
+.passion-orb::before {
+  content: '';
+  position: absolute;
+  inset: -0.55rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-accent);
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+.passion:hover .passion-orb {
+  transform: translateY(-5px);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.passion:hover .passion-orb::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.passion-name {
+  margin: 1.1rem 0 1.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Tags hobbies : pilules mono avec micro-élévation au survol */
+.hobby-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hobby-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-secondary);
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out),
+              color 0.3s var(--ease-out);
+}
+
+.hobby-tag i,
+.hobby-tag .tag-svg {
+  color: var(--color-foreground);
+  font-size: 0.9rem;
+}
+
+.tag-svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.hobby-tag:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-accent);
+  color: var(--color-foreground);
+}
+
+/* Expérience : capsule sombre à grands coins arrondis —
+   reprend le contraste inversé de la section Contact */
+/* Espacement entre plusieurs cartes expérience empilées */
+.experience + .experience {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+}
+
+.experience {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: flex-start;
+  padding: clamp(1.75rem, 3.5vw, 2.5rem);
+  border-radius: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--color-foreground);
+  color: var(--color-background);
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+.experience:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 28px 55px -28px rgba(9, 9, 11, 0.55);
+}
+
+.experience-badge {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: clamp(3rem, 7vw, 4.25rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid #3F3F46;
+  color: #60A5FA;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+}
+
+/* Filigrane arrondi surdimensionné dans le coin */
+.experience-watermark {
+  position: absolute;
+  right: -1rem;
+  bottom: -1.75rem;
+  font-size: clamp(6rem, 12vw, 10rem);
+  color: #60A5FA;
+  opacity: 0.1;
+  pointer-events: none;
+  transform: rotate(-8deg);
+  transition: transform 0.6s var(--ease-out), opacity 0.6s var(--ease-out);
+}
+
+.experience:hover .experience-watermark {
+  transform: rotate(0deg) scale(1.06);
+  opacity: 0.16;
+}
+
+.experience-body {
+  position: relative;
+  z-index: 1;
+}
+
+.experience-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 0.9rem;
+}
+
+.experience-title {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+.experience-sub {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin: 0 0 1.1rem;
+}
+
+.experience-text {
+  max-width: 44rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #D4D4D8;
+  margin: 0 0 1.5rem;
+}
+
+.experience-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.experience-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid #27272A;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-border);
+}
+
+.experience-fact i {
+  color: #60A5FA;
+}
+
+@media (max-width: 575px) {
+  .experience {
+    flex-direction: column;
+  }
+}
+
+/* === 8. Compétences === */
+
+.skills-subhead {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  margin: 0 0 1.5rem;
+}
+
+/* Respiration au-dessus du 2e groupe (un sous-titre qui suit une grille) */
+.skills-grid + .skills-subhead {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
+/* Grille "hairline" : le fond du <ul> teinte les interstices de 1px */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-card {
+  position: relative;
+  background: var(--color-background);
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 2vw, 1.75rem);
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+/* Survol : légère élévation */
+.skill-card:hover {
+  transform: scale(1.20);
+  box-shadow: 0 20px 45px -20px rgba(9, 9, 11, 0.25);
+  z-index: 1;
+}
+
+.skill-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 2.1rem;
+  margin-bottom: 1.1rem;
+  font-size: 1.9rem;
+  color: var(--color-secondary);
+  transition: color 0.3s var(--ease-out);
+}
+
+/* Couleurs officielles des technos */
+.skill-icons .fa-python { color: #3776AB; }
+.skill-icons .fa-js { color: #F7DF1E; }
+.skill-icons .fa-html5 { color: #E34F26; }
+.skill-icons .fa-css3-alt { color: #1572B6; }
+.skill-icons .fa-bootstrap { color: #7952B3; }
+.skill-icons .fa-php { color: #777BB4; }
+.skill-icons .fa-database { color: #F29111; }
+.skill-icons .fa-linux { color: #09090B; }
+.skill-icons .fa-git-alt { color: #F05032; }
+.skill-icons .fa-file-excel { color: #217346; }
+.skill-icons .fa-figma { color: #F24E1E; }
+.skill-icons.skill-glyph { color: #00599C; }
+
+/* Icône SVG (Notion) : mêmes dimensions que les icônes Font Awesome */
+.skill-svg {
+  width: 1em;
+  height: 1em;
+  color: #09090B;
+}
+
+.skill-glyph {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.skill-name {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.3rem;
+}
+
+.skill-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  margin: 0;
+}
 
 /* === 9. Projets === TODO étape 4 */
 
