@@ -35,8 +35,8 @@ Contient l'ancienne implémentation complète et figée (`reference/index.html`,
 
 1. [x] Réorganisation (`reference/` + fichiers de départ) + `CLAUDE.md`
 2. [x] Squelette HTML sémantique complet (head, header, hero, à propos, compétences, projets, contact, footer) — sans style
-3. [ ] Fondations CSS : reset, custom properties (couleurs/espacements/typo), intégration grille Bootstrap
-4. [ ] CSS section par section : hero → à propos → compétences → projets → contact
+3. [x] Fondations CSS : reset, custom properties (couleurs/espacements/typo), intégration grille Bootstrap
+4. [ ] CSS section par section : hero → à propos → compétences → projets → contact (hero, à propos, compétences faits — reste projets, contact)
 5. [ ] JS progressif : reveal au scroll, curseur custom + magnétisme, loader terminal
 6. [ ] JS avancé : fetch GitHub des projets, ticker rAF partagé
 7. [ ] Contenu réel + accessibilité (alt, ARIA, meta/OG) + responsive + `prefers-reduced-motion`
