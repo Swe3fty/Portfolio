@@ -711,7 +711,114 @@ sup {
   }
 }
 
-/* === 10. Contact === TODO étape 4 */
+/* === 10. Contact === */
+
+/* Section inversée : fond noir, portrait N&B en calque à droite.
+   L'accent #2563EB ne passe pas le contraste AA sur #09090B :
+   on le remplace localement par un bleu plus clair via une
+   custom property scopée à la section */
+.contact {
+  --accent-on-dark: #60A5FA;
+  position: relative;
+  overflow: hidden; /* le portrait absolu ne doit pas déborder de la section */
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+.contact .accent {
+  color: var(--accent-on-dark);
+}
+
+.contact-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(46%, 42rem);
+  object-fit: cover;
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+/* Calque sombre par-dessus le portrait : opaque côté texte, transparent
+   côté photo, pour garantir le contraste quelle que soit la largeur */
+.contact::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    #09090B 42%,
+    rgba(9, 9, 11, 0.72) 68%,
+    rgba(9, 9, 11, 0.28) 100%);
+  pointer-events: none; /* le calque ne doit pas intercepter les clics */
+}
+
+/* Le contenu passe au-dessus du portrait et du calque */
+.contact-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-cta {
+  display: inline-block;
+  font-size: clamp(3rem, 10vw, 9rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  transition: color 0.3s var(--ease-out);
+}
+
+.contact-cta:hover {
+  color: var(--accent-on-dark);
+}
+
+/* Le focus global (outline accent 2px) est peu lisible sur fond sombre :
+   anneau plus large et plus clair ici */
+.contact-cta:focus-visible,
+.contact-email a:focus-visible {
+  outline: 2px solid var(--accent-on-dark);
+  outline-offset: 6px;
+  box-shadow: 0 0 0 12px rgba(96, 165, 250, 0.22);
+  border-radius: 6px;
+}
+
+.contact-email {
+  margin: clamp(2rem, 5vh, 3.5rem) 0 0;
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+}
+
+.contact-email a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0; /* zone cliquable confortable */
+  color: var(--color-border);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-color: rgba(228, 228, 231, 0.35);
+  transition: color 0.3s var(--ease-out), text-decoration-color 0.3s var(--ease-out);
+}
+
+.contact-email a:hover {
+  color: #93C5FD;
+  text-decoration-color: currentColor;
+}
+
+/* Tablette/mobile : plus de place pour une colonne photo,
+   le portrait devient un fond pleine largeur très estompé */
+@media (max-width: 991px) {
+  .contact-photo {
+    width: 100%;
+    opacity: 0.3;
+    object-position: center 20%;
+  }
+  .contact::after {
+    background: linear-gradient(180deg,
+      rgba(9, 9, 11, 0.82) 0%,
+      rgba(9, 9, 11, 0.62) 100%);
+  }
+}
 
 /* === 11. Footer === TODO étape 4 (chrome) */
 
