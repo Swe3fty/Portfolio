@@ -48,12 +48,13 @@ function initReveal() {
 
 /* Avance d'une fraction du chemin restant entre `a` et `b` (16 % par défaut) */
 function lerp(a, b, speed = 0.16) {
-  return a + (b - a) * (REDUCED_MOTION ? 1 : speed);
+  return a + (b - a) * speed;
 }
 
 function initCursor() {
   const cursor = document.getElementById('custom-cursor');
-  if (!cursor || !window.matchMedia('(pointer: fine)').matches) return;
+  // Pas de curseur custom sans souris, ni si l'utilisateur refuse les animations
+  if (!cursor || REDUCED_MOTION || !window.matchMedia('(pointer: fine)').matches) return;
 
   document.documentElement.classList.add('has-custom-cursor');
 
@@ -138,7 +139,7 @@ const PROJECTS = [
     repo: 'solar-pannel',
     title: 'Gestion photovoltaïque',
     stack: 'Html/Css · PHP · JavaScript',
-    description: "Application web de gestion des installations photovoltaïques chez les particuliers&nbsp;: suivi des données, back-office PHP et base MariaDB.",
+    description: "Application web de gestion des installations photovoltaïques chez les particuliers&nbsp;: suivi des données, PHP et base MySQL.",
   },
   {
     repo: 'graph_theory_project',
@@ -148,6 +149,54 @@ const PROJECTS = [
   },
 ];
 
+const GH_CACHE_KEY = 'gh-repos';
+const GH_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 h, en millisecondes
+
+/* Dépôts GitHub : depuis le cache de session s'il est récent, sinon l'API.
+   L'API anonyme est limitée à 60 requêtes/heure par adresse IP : le cache
+   évite d'en consommer une à chaque rechargement. Au-delà de 5 s sans
+   réponse, on abandonne (la liste HTML reste affichée). */
+async function fetchRepos() {
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(GH_CACHE_KEY));
+    if (cached && Date.now() - cached.time < GH_CACHE_TTL) return cached.repos;
+  } catch { /* sessionStorage indisponible ou cache illisible : on interroge l'API */ }
+
+  const response = await fetch(
+    `https://api.github.com/users/${GH_USER}/repos?per_page=100`,
+    { signal: AbortSignal.timeout(5000) },
+  );
+  if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+
+  // On ne garde que les trois champs utiles (la réponse complète est lourde)
+  const repos = (await response.json()).map(({ name, html_url, pushed_at }) => ({ name, html_url, pushed_at }));
+
+  try {
+    sessionStorage.setItem(GH_CACHE_KEY, JSON.stringify({ time: Date.now(), repos }));
+  } catch { /* stockage plein ou bloqué : pas grave, on se passe du cache */ }
+
+  return repos;
+}
+
+/* Construit un lien projet. L'URL vient de l'API : on l'assigne comme
+   propriété (jamais interprétée comme du HTML). Le reste vient de PROJECTS,
+   écrit ici même, donc sans risque dans innerHTML. */
+function projectItem(project, repo, index) {
+  const link = document.createElement('a');
+  link.className = 'project-item';
+  link.href = repo.html_url;
+  link.target = '_blank';
+  link.rel = 'noopener';
+
+  const year = new Date(repo.pushed_at).getFullYear();
+  link.innerHTML = `
+    <span class="project-index">${String(index).padStart(2, '0')}</span>
+    <h3 class="project-title">${project.title}</h3>
+    <span class="project-meta">${project.stack} · ${year}</span>
+    <p class="project-desc">${project.description}</p>`;
+  return link;
+}
+
 /* async/await : on peut écrire "attends la réponse" sans bloquer la page.
    Pendant l'attente, le navigateur continue à tourner normalement. */
 async function initProjects() {
@@ -155,29 +204,16 @@ async function initProjects() {
   if (!list) return;
 
   try {
-    const response = await fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100`);
-    if (!response.ok) throw new Error(`GitHub API ${response.status}`);
-    const repos = await response.json(); // tableau d'objets, un par dépôt
-
-    let html = '';
-    let index = 0;
+    const repos = await fetchRepos();
+    const items = [];
 
     for (const project of PROJECTS) {
       const repo = repos.find((r) => r.name === project.repo);
       if (!repo) continue; // dépôt renommé ou supprimé : on le saute
-
-      index += 1;
-      const year = new Date(repo.pushed_at).getFullYear();
-      html += `
-        <a class="project-item" href="${repo.html_url}" target="_blank" rel="noopener">
-          <span class="project-index">${String(index).padStart(2, '0')}</span>
-          <h3 class="project-title">${project.title}</h3>
-          <span class="project-meta">${project.stack} · ${year}</span>
-          <p class="project-desc">${project.description}</p>
-        </a>`;
+      items.push(projectItem(project, repo, items.length + 1));
     }
 
-    if (html) list.innerHTML = html;
+    if (items.length) list.replaceChildren(...items);
   } catch (error) {
     // Hors ligne, quota API dépassé… : on garde la liste HTML telle quelle
     console.warn('Projets : API GitHub indisponible, liste statique conservée.', error);
@@ -193,7 +229,7 @@ async function initProjects() {
 function initPreview() {
   const wrap = document.getElementById('project-preview');
   const list = document.getElementById('projects-list');
-  if (!wrap || !list || !window.matchMedia('(pointer: fine)').matches) return;
+  if (!wrap || !list || REDUCED_MOTION || !window.matchMedia('(pointer: fine)').matches) return;
 
   const img = wrap.querySelector('img');
   const mouse = { x: 0, y: 0 };
@@ -220,14 +256,11 @@ function initPreview() {
     mouse.y = e.clientY;
   });
 
-  list.addEventListener('mouseover', (e) => {
-    const link = e.target.closest('.project-item');
-    if (!link) return;
-
-    // Première apparition : on place la miniature sous la souris directement
+  function show(link, x, y) {
+    // Première apparition : on place la miniature directement au point (x, y)
     if (!wrap.classList.contains('is-visible')) {
-      pos.x = e.clientX;
-      pos.y = e.clientY;
+      pos.x = x;
+      pos.y = y;
     }
 
     const url = imageUrl(link);
@@ -237,11 +270,28 @@ function initPreview() {
     } else if (img.naturalWidth > 0) {
       wrap.classList.add('is-visible'); // même image, déjà chargée
     }
-  });
+  }
 
-  list.addEventListener('mouseleave', () => {
+  function hide() {
     wrap.classList.remove('is-visible');
+  }
+
+  list.addEventListener('mouseover', (e) => {
+    const link = e.target.closest('.project-item');
+    if (link) show(link, e.clientX, e.clientY);
   });
+  list.addEventListener('mouseleave', hide);
+
+  // Navigation au clavier (Tab) : la miniature se pose au centre du lien
+  list.addEventListener('focusin', (e) => {
+    const link = e.target.closest('.project-item');
+    if (!link) return;
+    const r = link.getBoundingClientRect();
+    mouse.x = r.left + r.width / 2;
+    mouse.y = r.top + r.height / 2;
+    show(link, mouse.x, mouse.y);
+  });
+  list.addEventListener('focusout', hide);
 
   function frame() {
     const previousX = pos.x;
@@ -251,7 +301,6 @@ function initPreview() {
     // Inclinaison proportionnelle à la vitesse horizontale, bornée à ±10°
     let tilt = (pos.x - previousX) * 0.55;
     tilt = Math.max(-10, Math.min(10, tilt));
-    if (REDUCED_MOTION) tilt = 0;
 
     wrap.style.transform =
       `translate(${pos.x}px, ${pos.y}px) translate(-50%, -58%) rotate(${tilt}deg)`;

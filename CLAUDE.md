@@ -37,5 +37,5 @@ Contient l'ancienne implémentation complète et figée (`reference/index.html`,
 3. [x] Fondations CSS : reset, custom properties (couleurs/espacements/typo), intégration grille Bootstrap
 4. [x] CSS section par section : hero → à propos → compétences → projets → contact → footer
 5. [x] JS progressif : reveal au scroll, curseur custom + magnétisme (loader terminal abandonné)
-6. [ ] JS avancé : fetch GitHub des projets, ticker rAF partagé
+6. [x] JS avancé : fetch GitHub des projets, miniature au survol (captures locales) — ticker partagé abandonné (une seule boucle par effet suffit)
 7. [ ] Contenu réel + accessibilité (alt, ARIA, meta/OG) + responsive + `prefers-reduced-motion`
