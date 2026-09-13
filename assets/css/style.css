@@ -887,7 +887,48 @@ html.js .skills-grid .reveal:nth-child(7) { transition-delay: 0.36s; }
 html.js .skills-grid .reveal:nth-child(8) { transition-delay: 0.42s; }
 html.js .skills-grid .reveal:nth-child(9) { transition-delay: 0.48s; }
 
-/* === 12. Overlays (loader terminal / curseur custom / preview projet) === TODO étape JS */
+/* === 12. Overlays === */
+
+/* --- Curseur custom ---
+   Actif seulement si le JS tourne (.js) ET qu'un pointeur précis existe
+   (souris/trackpad, pas d'écran tactile) : le JS pose .has-custom-cursor. */
+
+@media (pointer: fine) {
+  html.js.has-custom-cursor,
+  html.js.has-custom-cursor body,
+  html.js.has-custom-cursor a,
+  html.js.has-custom-cursor button {
+    cursor: none; /* on cache le curseur natif */
+  }
+}
+
+/* Le rond fait 45px (taille survolée). Au repos le JS le réduit via scale()
+   à ~14px : réduire reste net, agrandir pixelise. */
+#custom-cursor {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference; /* blanc sur fond clair = inversé, toujours visible */
+  pointer-events: none;       /* le rond ne bloque jamais les clics */
+  will-change: transform;
+}
+
+html.js.has-custom-cursor #custom-cursor {
+  display: block;
+}
+
+/* Éléments aimantés : ils glissent légèrement vers la souris (transform posé en JS) */
+.magnetic {
+  display: inline-block;
+  will-change: transform;
+  transition: transform 0.4s var(--ease-out);
+}
 
 /* === 13. prefers-reduced-motion === */
 /* L'utilisateur a demandé moins d'animations : tout est visible d'emblée */
@@ -902,4 +943,5 @@ html.js .skills-grid .reveal:nth-child(9) { transition-delay: 0.48s; }
   }
 
   .hero-scroll i { animation: none; }
+  .magnetic { transition: none; }
 }
