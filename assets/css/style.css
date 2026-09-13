@@ -859,6 +859,47 @@ sup {
   color: var(--color-foreground);
 }
 
+/* === 11b. Reveal au scroll ===
+   Le contenu n'est masqué QUE si le JS tourne (classe .js posée dans <head>).
+   Le JS ajoute .is-visible quand l'élément entre dans l'écran. */
+
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Cascades : les frères apparaissent avec un léger décalage */
+html.js .about-statement .reveal:nth-child(2) { transition-delay: 0.08s; }
+html.js .about-statement .reveal:nth-child(3) { transition-delay: 0.16s; }
+html.js .about-passions .reveal:nth-child(2)  { transition-delay: 0.08s; }
+html.js .skills-grid .reveal:nth-child(2) { transition-delay: 0.06s; }
+html.js .skills-grid .reveal:nth-child(3) { transition-delay: 0.12s; }
+html.js .skills-grid .reveal:nth-child(4) { transition-delay: 0.18s; }
+html.js .skills-grid .reveal:nth-child(5) { transition-delay: 0.24s; }
+html.js .skills-grid .reveal:nth-child(6) { transition-delay: 0.30s; }
+html.js .skills-grid .reveal:nth-child(7) { transition-delay: 0.36s; }
+html.js .skills-grid .reveal:nth-child(8) { transition-delay: 0.42s; }
+html.js .skills-grid .reveal:nth-child(9) { transition-delay: 0.48s; }
+
 /* === 12. Overlays (loader terminal / curseur custom / preview projet) === TODO étape JS */
 
-/* === 13. prefers-reduced-motion === TODO étape animations */
+/* === 13. prefers-reduced-motion === */
+/* L'utilisateur a demandé moins d'animations : tout est visible d'emblée */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hero-scroll i { animation: none; }
+}
