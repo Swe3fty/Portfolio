@@ -113,7 +113,58 @@ function initCursor() {
   requestAnimationFrame(frame);
 }
 
+/* ═══ 3. Projets GitHub ═════════════════════════════════════════
+   La liste écrite dans le HTML sert de secours : visible sans JS, ou si
+   l'API GitHub ne répond pas. Le JS la reconstruit avec les infos à jour
+   (lien, année du dernier push). Titres et stack sont décrits ici, car
+   l'API ne connaît qu'un seul langage par dépôt. */
+
+const GH_USER = 'Swe3fty';
+
+const PROJECTS = [
+  { repo: 'projet_dev_web_s6',    title: 'Borneo',                 stack: 'Html/Css · JavaScript · MySQL · Python' },
+  { repo: 'Route-Planner',        title: 'Planifieur de routes',   stack: 'C++ · MySQL' },
+  { repo: 'solar-pannel',         title: 'Gestion photovoltaïque', stack: 'Html/Css · PHP · JavaScript' },
+  { repo: 'graph_theory_project', title: 'Théorie des graphes',    stack: 'Python' },
+];
+
+/* async/await : on peut écrire "attends la réponse" sans bloquer la page.
+   Pendant l'attente, le navigateur continue à tourner normalement. */
+async function initProjects() {
+  const list = document.getElementById('projects-list');
+  if (!list) return;
+
+  try {
+    const response = await fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100`);
+    if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+    const repos = await response.json(); // tableau d'objets, un par dépôt
+
+    let html = '';
+    let index = 0;
+
+    for (const project of PROJECTS) {
+      const repo = repos.find((r) => r.name === project.repo);
+      if (!repo) continue; // dépôt renommé ou supprimé : on le saute
+
+      index += 1;
+      const year = new Date(repo.pushed_at).getFullYear();
+      html += `
+        <a class="project-item" href="${repo.html_url}" target="_blank" rel="noopener">
+          <span class="project-index">${String(index).padStart(2, '0')}</span>
+          <h3 class="project-title">${project.title}</h3>
+          <span class="project-meta">${project.stack} · ${year}</span>
+        </a>`;
+    }
+
+    if (html) list.innerHTML = html;
+  } catch (error) {
+    // Hors ligne, quota API dépassé… : on garde la liste HTML telle quelle
+    console.warn('Projets : API GitHub indisponible, liste statique conservée.', error);
+  }
+}
+
 /* ═══ Lancement ═════════════════════════════════════════════════ */
 
 initReveal();
 initCursor();
+initProjects();
