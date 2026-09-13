@@ -14,7 +14,6 @@ Gaspard a déjà eu une version fonctionnelle du site dont il aimait le rendu, m
 - Ultra-minimalisme clair : fond `#FAFAFA`, texte `#09090B`, accent unique `#2563EB`, police Inter (300–900), whitespace massif, titres géants.
 - Header en `mix-blend-mode: difference`.
 - Curseur custom avec lerp + magnétisme (`pointer: fine` uniquement).
-- Loader terminal au chargement.
 - Sections : 01 À propos → 02 Compétences → 03 Projets → 04 Contact.
 
 ## `reference/`
@@ -37,6 +36,6 @@ Contient l'ancienne implémentation complète et figée (`reference/index.html`,
 2. [x] Squelette HTML sémantique complet (head, header, hero, à propos, compétences, projets, contact, footer) — sans style
 3. [x] Fondations CSS : reset, custom properties (couleurs/espacements/typo), intégration grille Bootstrap
 4. [x] CSS section par section : hero → à propos → compétences → projets → contact → footer
-5. [ ] JS progressif : reveal au scroll, curseur custom + magnétisme, loader terminal
+5. [x] JS progressif : reveal au scroll, curseur custom + magnétisme (loader terminal abandonné)
 6. [ ] JS avancé : fetch GitHub des projets, ticker rAF partagé
 7. [ ] Contenu réel + accessibilité (alt, ARIA, meta/OG) + responsive + `prefers-reduced-motion`
