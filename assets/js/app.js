@@ -46,9 +46,9 @@ function initReveal() {
    liens. Sur un élément .magnetic, le rond se colle à son centre et
    l'élément glisse vers la souris. Souris/trackpad uniquement. */
 
-/* Avance de 16 % du chemin restant entre `a` et `b` : mouvement fluide */
-function lerp(a, b) {
-  return a + (b - a) * (REDUCED_MOTION ? 1 : 0.16);
+/* Avance d'une fraction du chemin restant entre `a` et `b` (16 % par défaut) */
+function lerp(a, b, speed = 0.16) {
+  return a + (b - a) * (REDUCED_MOTION ? 1 : speed);
 }
 
 function initCursor() {
@@ -122,10 +122,30 @@ function initCursor() {
 const GH_USER = 'Swe3fty';
 
 const PROJECTS = [
-  { repo: 'projet_dev_web_s6',    title: 'Borneo',                 stack: 'Html/Css · JavaScript · MySQL · Python' },
-  { repo: 'Route-Planner',        title: 'Planifieur de routes',   stack: 'C++ · MySQL' },
-  { repo: 'solar-pannel',         title: 'Gestion photovoltaïque', stack: 'Html/Css · PHP · JavaScript' },
-  { repo: 'graph_theory_project', title: 'Théorie des graphes',    stack: 'Python' },
+  {
+    repo: 'projet_dev_web_s6',
+    title: 'Borneo',
+    stack: 'Html/Css · JavaScript · MySQL · Python',
+    description: "Plateforme d'analyse des bornes de recharge électrique en France&nbsp;: carte interactive, statistiques par département et prédictions par IA (clustering, Random Forest).",
+  },
+  {
+    repo: 'Route-Planner',
+    title: 'Planifieur de routes',
+    stack: 'C++ · MySQL',
+    description: "Application Qt en C++ qui calcule le plus court chemin entre deux villes de l'ouest de la France, avec carte interactive et fiches Wikipédia.",
+  },
+  {
+    repo: 'solar-pannel',
+    title: 'Gestion photovoltaïque',
+    stack: 'Html/Css · PHP · JavaScript',
+    description: "Application web de gestion des installations photovoltaïques chez les particuliers&nbsp;: suivi des données, back-office PHP et base MariaDB.",
+  },
+  {
+    repo: 'graph_theory_project',
+    title: 'Théorie des graphes',
+    stack: 'Python',
+    description: "Génération d'un terrain 2D sur grille hexagonale et résolution de problèmes de déplacement par algorithmes de graphes, en Python.",
+  },
 ];
 
 /* async/await : on peut écrire "attends la réponse" sans bloquer la page.
@@ -153,6 +173,7 @@ async function initProjects() {
           <span class="project-index">${String(index).padStart(2, '0')}</span>
           <h3 class="project-title">${project.title}</h3>
           <span class="project-meta">${project.stack} · ${year}</span>
+          <p class="project-desc">${project.description}</p>
         </a>`;
     }
 
@@ -163,8 +184,87 @@ async function initProjects() {
   }
 }
 
+/* ═══ 4. Miniature des projets ══════════════════════════════════
+   Au survol d'un projet, sa capture d'écran (assets/img/projects/<dépôt>.png)
+   suit la souris avec un retard plus marqué que le curseur, et penche
+   légèrement dans le sens du mouvement. Souris/trackpad uniquement.
+   Si la capture n'existe pas, la miniature reste cachée. */
+
+function initPreview() {
+  const wrap = document.getElementById('project-preview');
+  const list = document.getElementById('projects-list');
+  if (!wrap || !list || !window.matchMedia('(pointer: fine)').matches) return;
+
+  const img = wrap.querySelector('img');
+  const mouse = { x: 0, y: 0 };
+  const pos = { x: 0, y: 0 };
+  let currentUrl = '';
+
+  // Lien https://github.com/Swe3fty/<dépôt> → assets/img/projects/<dépôt>.png
+  function imageUrl(link) {
+    const repo = new URL(link.href).pathname.split('/').pop();
+    return `assets/img/projects/${repo}.png`;
+  }
+
+  // Préchargement : les captures sont prêtes avant le premier survol
+  list.querySelectorAll('.project-item').forEach((link) => {
+    new Image().src = imageUrl(link);
+  });
+
+  // C'est le chargement de l'image qui décide de l'affichage
+  img.addEventListener('load', () => wrap.classList.add('is-visible'));
+  img.addEventListener('error', () => wrap.classList.remove('is-visible'));
+
+  document.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  list.addEventListener('mouseover', (e) => {
+    const link = e.target.closest('.project-item');
+    if (!link) return;
+
+    // Première apparition : on place la miniature sous la souris directement
+    if (!wrap.classList.contains('is-visible')) {
+      pos.x = e.clientX;
+      pos.y = e.clientY;
+    }
+
+    const url = imageUrl(link);
+    if (url !== currentUrl) {
+      currentUrl = url;
+      img.src = url; // déclenche load (→ visible) ou error (→ cachée)
+    } else if (img.naturalWidth > 0) {
+      wrap.classList.add('is-visible'); // même image, déjà chargée
+    }
+  });
+
+  list.addEventListener('mouseleave', () => {
+    wrap.classList.remove('is-visible');
+  });
+
+  function frame() {
+    const previousX = pos.x;
+    pos.x = lerp(pos.x, mouse.x, 0.09);
+    pos.y = lerp(pos.y, mouse.y, 0.09);
+
+    // Inclinaison proportionnelle à la vitesse horizontale, bornée à ±10°
+    let tilt = (pos.x - previousX) * 0.55;
+    tilt = Math.max(-10, Math.min(10, tilt));
+    if (REDUCED_MOTION) tilt = 0;
+
+    wrap.style.transform =
+      `translate(${pos.x}px, ${pos.y}px) translate(-50%, -58%) rotate(${tilt}deg)`;
+
+    requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+}
+
 /* ═══ Lancement ═════════════════════════════════════════════════ */
 
 initReveal();
 initCursor();
 initProjects();
+initPreview();

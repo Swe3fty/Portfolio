@@ -645,8 +645,9 @@ sup {
 
 .project-item {
   display: flex;
+  flex-wrap: wrap; /* la description passe sous la ligne numéro / titre / meta */
   align-items: baseline; /* numéro et meta (petits) s'alignent sur la ligne de base du titre géant */
-  gap: clamp(1rem, 3vw, 2.5rem);
+  column-gap: clamp(1rem, 3vw, 2.5rem); /* pas de row-gap : la description gère sa marge */
   padding-block: clamp(1.5rem, 4vh, 3rem);
   border-top: 1px solid var(--color-border);
   transition: opacity 0.4s var(--ease-out);
@@ -685,6 +686,17 @@ sup {
 
 .project-item:hover .project-title {
   transform: translateX(clamp(0.5rem, 2vw, 1.5rem));
+}
+
+/* Description : pleine largeur sous le titre, alignée avec lui */
+.project-desc {
+  flex-basis: 100%;
+  max-width: 38rem;
+  margin: 0.9rem 0 0;
+  padding-left: calc(2.2rem + clamp(1rem, 3vw, 2.5rem)); /* largeur du numéro + gap */
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+  line-height: 1.6;
+  color: var(--color-secondary);
 }
 
 .project-meta {
@@ -928,6 +940,46 @@ html.js.has-custom-cursor #custom-cursor {
   transition: transform 0.4s var(--ease-out);
 }
 
+/* --- Miniature des projets ---
+   Image du dépôt (générée par GitHub) qui suit la souris au survol
+   d'un projet. Positionnée en JS, apparition en CSS. */
+#project-preview {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: min(34rem, 44vw); /* la hauteur suit le ratio de la capture */
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 24px 60px -12px rgba(9, 9, 11, 0.35); /* détache une capture claire du fond clair */
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+html.js #project-preview {
+  display: block;
+}
+
+#project-preview.is-visible {
+  opacity: 1;
+}
+
+/* Léger zoom arrière à l'apparition */
+#project-preview img {
+  display: block;
+  width: 100%;
+  height: auto; /* image entière, jamais recadrée */
+  transform: scale(1.08);
+  transition: transform 0.6s var(--ease-out);
+}
+
+#project-preview.is-visible img {
+  transform: scale(1);
+}
+
 /* === 13. prefers-reduced-motion === */
 /* L'utilisateur a demandé moins d'animations : tout est visible d'emblée */
 
@@ -942,4 +994,5 @@ html.js.has-custom-cursor #custom-cursor {
 
   .hero-scroll i { animation: none; }
   .magnetic { transition: none; }
+  #project-preview img { transition: none; transform: none; }
 }
