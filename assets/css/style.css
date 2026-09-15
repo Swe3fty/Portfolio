@@ -295,14 +295,6 @@ sup {
   font-size: 0.9em;
 }
 
-/* Remonte la colonne de droite (passions + expérience) pour la faire
-   venir à côté du titre plutôt que de suivre le texte de gauche */
-@media (min-width: 992px) {
-  .about .col-lg-7 {
-    margin-top: -6rem;
-  }
-}
-
 /* Passions : médaillons ronds (écho des ondes du portrait) */
 
 .about-passions {
@@ -524,12 +516,6 @@ sup {
   color: #60A5FA;
 }
 
-@media (max-width: 575px) {
-  .experience {
-    flex-direction: column;
-  }
-}
-
 /* === 8. Compétences === */
 
 .skills {
@@ -706,21 +692,6 @@ sup {
   white-space: nowrap;
 }
 
-/* Mobile : le titre prend sa propre ligne, numéro au-dessus, meta en dessous */
-@media (max-width: 767px) {
-  .project-item {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  .project-title {
-    flex-basis: 100%;
-    order: 2;
-  }
-  .project-meta {
-    order: 3;
-  }
-}
-
 /* === 10. Contact === */
 
 /* Section inversée : fond noir, portrait N&B en calque à droite.
@@ -815,21 +786,6 @@ sup {
   text-decoration-color: currentColor;
 }
 
-/* Tablette/mobile : plus de place pour une colonne photo,
-   le portrait devient un fond pleine largeur très estompé */
-@media (max-width: 991px) {
-  .contact-photo {
-    width: 100%;
-    opacity: 0.3;
-    object-position: center 20%;
-  }
-  .contact::after {
-    background: linear-gradient(180deg,
-      rgba(9, 9, 11, 0.82) 0%,
-      rgba(9, 9, 11, 0.62) 100%);
-  }
-}
-
 /* === 11. Footer === */
 
 .site-footer {
@@ -908,16 +864,8 @@ html.js .skills-grid .reveal:nth-child(10) { animation-delay: 0.54s; }
 
 /* --- Curseur custom ---
    Actif seulement si le JS tourne (.js) ET qu'un pointeur précis existe
-   (souris/trackpad, pas d'écran tactile) : le JS pose .has-custom-cursor. */
-
-@media (pointer: fine) {
-  html.js.has-custom-cursor,
-  html.js.has-custom-cursor body,
-  html.js.has-custom-cursor a,
-  html.js.has-custom-cursor button {
-    cursor: none; /* on cache le curseur natif */
-  }
-}
+   (souris/trackpad, pas d'écran tactile) : le JS pose .has-custom-cursor.
+   Le masquage du curseur natif (pointer: fine) est regroupé section 13. */
 
 /* Le rond fait 45px (taille survolée). Au repos le JS le réduit via scale()
    à ~14px : réduire reste net, agrandir pixelise. */
@@ -987,9 +935,71 @@ html.js #project-preview {
   transform: scale(1);
 }
 
-/* === 13. prefers-reduced-motion === */
-/* L'utilisateur a demandé moins d'animations : tout est visible d'emblée */
+/* === 13. Media queries ===
+   Toutes les adaptations responsive + accessibilité du site, regroupées
+   ici (plutôt que dispersées à côté de chaque composant) pour garder une
+   vue d'ensemble des breakpoints. Ordre : mobile → desktop, puis les
+   media features (pointer, prefers-reduced-motion). */
 
+/* --- ≤ 575px : Expérience (À propos) empilée verticalement --- */
+@media (max-width: 575px) {
+  .experience {
+    flex-direction: column;
+  }
+}
+
+/* --- ≤ 767px : Projets — le titre prend sa propre ligne,
+   numéro au-dessus, meta en dessous --- */
+@media (max-width: 767px) {
+  .project-item {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  .project-title {
+    flex-basis: 100%;
+    order: 2;
+  }
+  .project-meta {
+    order: 3;
+  }
+}
+
+/* --- ≤ 991px : Contact — plus de place pour une colonne photo,
+   le portrait devient un fond pleine largeur très estompé --- */
+@media (max-width: 991px) {
+  .contact-photo {
+    width: 100%;
+    opacity: 0.3;
+    object-position: center 20%;
+  }
+  .contact::after {
+    background: linear-gradient(180deg,
+      rgba(9, 9, 11, 0.82) 0%,
+      rgba(9, 9, 11, 0.62) 100%);
+  }
+}
+
+/* --- ≥ 992px : À propos — remonte la colonne de droite
+   (passions + expérience) pour la faire venir à côté du titre
+   plutôt que de suivre le texte de gauche --- */
+@media (min-width: 992px) {
+  .about .col-lg-7 {
+    margin-top: -6rem;
+  }
+}
+
+/* --- Souris/trackpad uniquement : curseur custom actif,
+   on cache le curseur natif --- */
+@media (pointer: fine) {
+  html.js.has-custom-cursor,
+  html.js.has-custom-cursor body,
+  html.js.has-custom-cursor a,
+  html.js.has-custom-cursor button {
+    cursor: none;
+  }
+}
+
+/* --- L'utilisateur a demandé moins d'animations : tout est visible d'emblée --- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
