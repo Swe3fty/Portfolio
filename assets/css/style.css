@@ -34,7 +34,6 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased; /*Chrome & Safari*/
   -moz-osx-font-smoothing: grayscale; /*FireFox MacOs*/
-  /*overflow-x: hidden;*/
 }
 
 /* Pseudo Element activité a la sélection de texte */
@@ -250,12 +249,6 @@ sup {
   line-height: 0.98;
   letter-spacing: -0.04em;
   margin: 0 0 clamp(3rem, 7vh, 5.5rem);
-}
-
-/* Le point final reste plein et bleu, même dans la ligne en contour */
-.statement-line--ghost .accent {
-  text-shadow: none;
-  color: var(--color-accent);
 }
 
 .about-text {
@@ -628,13 +621,6 @@ sup {
    Le contenu final est injecté par le JS (fetch GitHub) ; le HTML garde
    un fallback statique visible sans JS (file://, API injoignable) */
 
-.projects-loading,
-.projects-error {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--color-muted);
-}
-
 .project-item {
   display: flex;
   flex-wrap: wrap; /* la description passe sous la ligne numéro / titre / meta */
@@ -902,7 +888,7 @@ html.js.has-custom-cursor #custom-cursor {
 }
 
 /* --- Miniature des projets ---
-   Image du dépôt (générée par GitHub) qui suit la souris au survol
+   Capture locale du projet (assets/img/projects/) qui suit la souris au survol
    d'un projet. Positionnée en JS, apparition en CSS. */
 #project-preview {
   display: none;
