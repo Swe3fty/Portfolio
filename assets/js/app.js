@@ -46,8 +46,8 @@ function initReveal() {
    liens. Sur un élément .magnetic, le rond se colle à son centre et
    l'élément glisse vers la souris. Souris/trackpad uniquement. */
 
-/* Avance d'une fraction du chemin restant entre `a` et `b` (16 % par défaut) */
-function lerp(a, b, speed = 0.16) {
+/* Avance d'une fraction du chemin restant entre `a` et `b` (20 % par défaut) */
+function lerp(a, b, speed = 0.20) {
   return a + (b - a) * speed;
 }
 
